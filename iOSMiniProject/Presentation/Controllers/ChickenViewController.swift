@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class ChickenViewController: UIViewController {
 
@@ -58,11 +59,11 @@ class ChickenViewController: UIViewController {
         self.setUpUI()
         
         self.menuName.text = self.viewModel.chicken.menuName
-        self.viewModel.onImageLoaded = { [weak self] menuImage in
-            DispatchQueue.main.async {
-                self?.menuImage.image = menuImage
-            }
+        guard let imageUrl = URL(string: self.viewModel.chicken.menuImage) else {
+            fatalError("cant get image URL")
         }
+        
+        self.menuImage.sd_setImage(with: imageUrl)
         self.navigationItem.title = self.menuName.text
     }
     

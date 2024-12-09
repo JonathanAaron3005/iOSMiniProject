@@ -7,6 +7,7 @@
 
 import UIKit
 import Foundation
+import SDWebImage
 
 class CustomCell: UICollectionViewCell {
 
@@ -46,15 +47,11 @@ class CustomCell: UICollectionViewCell {
         self.chicken = chicken
         self.testLabel.text = chicken.menuName
         
-        DispatchQueue.global().async { [weak self] in
-            if let imageUrl = URL(string: self?.chicken.menuImage ?? ""),
-               let imageData = try? Data(contentsOf: imageUrl),
-               let image = UIImage(data: imageData) {
-                DispatchQueue.main.async {
-                    self?.testLogo.image = image
-                }
-            }
+        guard let imageUrl = URL(string: self.chicken.menuImage) else {
+            fatalError("cant get image URL")
         }
+        
+        self.testLogo.sd_setImage(with: imageUrl)
     }
     
     private func setupUI() {
